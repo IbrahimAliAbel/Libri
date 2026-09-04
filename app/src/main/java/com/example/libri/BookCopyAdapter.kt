@@ -4,7 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+
 
 class BookCopyAdapter(
     private var bookCopies: List<BookCopy>
@@ -33,6 +35,18 @@ class BookCopyAdapter(
 
         holder.tvBookCode.text = bookCopy.code
         holder.tvBookStatus.text = bookCopy.status
+
+        holder.tvBookStatus.text = bookCopy.status
+
+        if (bookCopy.status == "AVAILABLE") {
+            holder.tvBookStatus.setTextColor(
+                ContextCompat.getColor(holder.itemView.context, android.R.color.holo_green_dark)
+            )
+        } else {
+            holder.tvBookStatus.setTextColor(
+                ContextCompat.getColor(holder.itemView.context, android.R.color.holo_red_dark)
+            )
+        }
     }
 
     override fun getItemCount(): Int {

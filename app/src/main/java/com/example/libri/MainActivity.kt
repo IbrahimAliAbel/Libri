@@ -1,19 +1,22 @@
 package com.example.libri
 
 import android.os.Bundle
-import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.example.libri.viewmodel.BookViewModel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerViewBooks: RecyclerView
     private lateinit var adapter: BookCopyAdapter
+
+    private val viewModel: BookViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,23 +29,31 @@ class MainActivity : AppCompatActivity() {
         recyclerViewBooks.layoutManager = LinearLayoutManager(this)
         recyclerViewBooks.adapter = adapter
 
-        loadBookCopies()
+        observeBookCopies()
+        observeError()
+
+        viewModel.loadBookCopies()
     }
 
-    private fun loadBookCopies() {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val bookCopies = RetrofitClient.api.getBookCopies()
-
-                Log.d("LIBRI_API", "Response: $bookCopies")
-
-                withContext(Dispatchers.Main) {
+    private fun observeBookCopies() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.bookCopies.collect { bookCopies ->
                     adapter = BookCopyAdapter(bookCopies)
                     recyclerViewBooks.adapter = adapter
                 }
+            }
+        }
+    }
 
-            } catch (e: Exception) {
-                Log.e("LIBRI_API", "Error: ${e.message}", e)
+    private fun observeError() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.error.collect { errorMessage ->
+                    if (errorMessage != null) {
+                        android.util.Log.e("LIBRI_API", "Error: $errorMessage")
+                    }
+                }
             }
         }
     }

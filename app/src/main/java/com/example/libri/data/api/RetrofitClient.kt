@@ -1,14 +1,7 @@
-package com.example.libri
+package com.example.libri.data.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-
-interface ApiService {
-
-    @GET("book-copies")
-    suspend fun getBookCopies(): List<BookCopy>
-}
 
 object RetrofitClient {
 
