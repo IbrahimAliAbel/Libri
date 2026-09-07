@@ -1,6 +1,8 @@
 package com.example.libri
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -15,12 +17,37 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerViewBooks: RecyclerView
     private lateinit var adapter: BookCopyAdapter
+    private lateinit var buttonLogout: Button
 
     private val viewModel: BookViewModel by viewModels()
 
+    private lateinit var tokenManager: TokenManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        tokenManager = TokenManager(this)
+
+        // Cek apakah user sudah login
+        if (tokenManager.getToken() == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            return
+        }
+
         setContentView(R.layout.activity_main)
+
+        buttonLogout = findViewById(R.id.buttonLogout)
+
+        buttonLogout.setOnClickListener {
+            tokenManager.clearToken()
+
+            startActivity(
+                Intent(this, LoginActivity::class.java)
+            )
+
+            finish()
+        }
 
         recyclerViewBooks = findViewById(R.id.recyclerViewBooks)
 
@@ -51,7 +78,10 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.error.collect { errorMessage ->
                     if (errorMessage != null) {
-                        android.util.Log.e("LIBRI_API", "Error: $errorMessage")
+                        android.util.Log.e(
+                            "LIBRI_API",
+                            "Error: $errorMessage"
+                        )
                     }
                 }
             }
