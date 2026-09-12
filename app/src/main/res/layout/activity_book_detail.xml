@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F7F7">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Back -->
+        <TextView
+            android:id="@+id/tvBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="← Back"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:padding="4dp" />
+
+        <!-- Cover -->
+        <ImageView
+            android:id="@+id/ivBookCover"
+            android:layout_width="160dp"
+            android:layout_height="220dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:background="#E0E0E0"
+            android:contentDescription="Book cover"
+            android:scaleType="centerCrop" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tvBookTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Book Title"
+            android:textColor="#222222"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <!-- Publisher -->
+        <TextView
+            android:id="@+id/tvBookPublisher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Publisher"
+            android:textColor="#777777"
+            android:textSize="14sp" />
+
+        <!-- Published year -->
+        <TextView
+            android:id="@+id/tvBookYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Published: 2026"
+            android:textColor="#777777"
+            android:textSize="14sp" />
+
+        <!-- ISBN -->
+        <TextView
+            android:id="@+id/tvBookIsbn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="ISBN: -"
+            android:textColor="#777777"
+            android:textSize="14sp" />
+
+        <!-- Description title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Description"
+            android:textColor="#222222"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/tvBookDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Book description..."
+            android:textColor="#555555"
+            android:textSize="15sp"
+            android:lineSpacingExtra="4dp" />
+
+        <!-- Availability -->
+        <TextView
+            android:id="@+id/tvBookAvailability"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Availability: Available"
+            android:textColor="#388E3C"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Borrow button -->
+        <Button
+            android:id="@+id/buttonBorrow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="BORROW"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</ScrollView>

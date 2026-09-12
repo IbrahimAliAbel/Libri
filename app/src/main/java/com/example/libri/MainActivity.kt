@@ -12,12 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.libri.viewmodel.BookViewModel
 import kotlinx.coroutines.launch
+import android.widget.EditText
+import android.text.Editable
+import android.text.TextWatcher
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerViewBooks: RecyclerView
     private lateinit var adapter: BookCopyAdapter
     private lateinit var buttonLogout: Button
+
 
     private val viewModel: BookViewModel by viewModels()
 
@@ -39,6 +43,31 @@ class MainActivity : AppCompatActivity() {
 
         buttonLogout = findViewById(R.id.buttonLogout)
 
+        val editTextSearch = findViewById<EditText>(R.id.editTextSearch)
+
+        editTextSearch.addTextChangedListener(object : TextWatcher {
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                adapter.filter(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+
         buttonLogout.setOnClickListener {
             tokenManager.clearToken()
 
@@ -51,7 +80,9 @@ class MainActivity : AppCompatActivity() {
 
         recyclerViewBooks = findViewById(R.id.recyclerViewBooks)
 
-        adapter = BookCopyAdapter(emptyList())
+        adapter = BookCopyAdapter(emptyList()) { bookId ->
+            openBookDetail(bookId)
+        }
 
         recyclerViewBooks.layoutManager = LinearLayoutManager(this)
         recyclerViewBooks.adapter = adapter
@@ -66,8 +97,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.bookCopies.collect { bookCopies ->
-                    adapter = BookCopyAdapter(bookCopies)
-                    recyclerViewBooks.adapter = adapter
+                    adapter.updateData(bookCopies)
                 }
             }
         }
@@ -86,5 +116,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun openBookDetail(bookId: String) {
+        val intent = Intent(this, BookDetailActivity::class.java)
+        intent.putExtra("BOOK_ID", bookId)
+        startActivity(intent)
     }
 }
