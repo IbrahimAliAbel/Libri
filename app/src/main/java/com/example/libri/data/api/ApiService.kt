@@ -18,6 +18,11 @@ interface ApiService {
     @GET("book-copies")
     suspend fun getBookCopies(): List<BookCopy>
 
+    @GET("book-copies/book/{book_id}")
+    suspend fun getBookCopiesByBookId(
+        @Path("book_id") bookId: String
+    ): List<BookCopy>
+
     @GET("books/{id}")
     suspend fun getBookById(
         @Path("id") id: String

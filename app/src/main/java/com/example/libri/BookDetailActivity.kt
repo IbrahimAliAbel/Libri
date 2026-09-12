@@ -53,8 +53,9 @@ class BookDetailActivity : AppCompatActivity() {
         }
 
         observeBookDetail()
-
+        observeBookCopies()
         viewModel.loadBookDetail(bookId)
+        viewModel.loadBookCopiesByBookId(bookId)
     }
 
     private fun observeBookDetail() {
@@ -80,6 +81,25 @@ class BookDetailActivity : AppCompatActivity() {
                         tvBookAvailability.text =
                             "Availability: Check physical copies"
                     }
+                }
+            }
+        }
+    }
+
+    private fun observeBookCopies() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.bookCopiesByBook.collect { bookCopies ->
+                    val availableCount = bookCopies.count {
+                        it.status == "AVAILABLE"
+                    }
+
+                    val totalCount = bookCopies.size
+
+                    tvBookAvailability.text =
+                        "Availability: $availableCount of $totalCount copies available"
+
+                    buttonBorrow.isEnabled = availableCount > 0
                 }
             }
         }

@@ -19,6 +19,9 @@ class BookViewModel : ViewModel() {
     private val _bookDetail = MutableStateFlow<Book?>(null)
     val bookDetail: StateFlow<Book?> = _bookDetail
 
+    private val _bookCopiesByBook = MutableStateFlow<List<BookCopy>>(emptyList())
+    val bookCopiesByBook: StateFlow<List<BookCopy>> = _bookCopiesByBook
+
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
@@ -38,6 +41,18 @@ class BookViewModel : ViewModel() {
             try {
                 _error.value = null
                 _bookDetail.value = repository.getBookById(id)
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
+    }
+
+    fun loadBookCopiesByBookId(bookId: String) {
+        viewModelScope.launch {
+            try {
+                _error.value = null
+                _bookCopiesByBook.value =
+                    repository.getBookCopiesByBookId(bookId)
             } catch (e: Exception) {
                 _error.value = e.message
             }

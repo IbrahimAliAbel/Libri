@@ -10,6 +10,10 @@ class BookRepository {
         return RetrofitClient.api.getBookCopies()
     }
 
+    suspend fun getBookCopiesByBookId(bookId: String): List<BookCopy> {
+        return RetrofitClient.api.getBookCopiesByBookId(bookId)
+    }
+
     suspend fun getBookById(id: String): Book {
         return RetrofitClient.api.getBookById(id)
     }
