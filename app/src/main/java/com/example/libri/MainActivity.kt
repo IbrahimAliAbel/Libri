@@ -42,6 +42,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         buttonLogout = findViewById(R.id.buttonLogout)
+        val buttonBorrowings = findViewById<Button>(R.id.buttonBorrowings)
+
+        buttonBorrowings.setOnClickListener {
+            startActivity(
+                Intent(this, BorrowingActivity::class.java)
+            )
+        }
 
         val editTextSearch = findViewById<EditText>(R.id.editTextSearch)
 

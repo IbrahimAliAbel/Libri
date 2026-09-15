@@ -7,6 +7,8 @@ import com.example.libri.data.model.LoginResponse
 import com.example.libri.data.model.MeResponse
 import com.example.libri.data.model.RegisterRequest
 import com.example.libri.data.model.RegisterResponse
+import com.example.libri.BorrowRequest
+import com.example.libri.Borrowing
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -42,4 +44,15 @@ interface ApiService {
     suspend fun getMe(
         @Header("Authorization") token: String
     ): MeResponse
+
+    @POST("borrowings")
+    suspend fun createBorrowing(
+        @Header("Authorization") token: String,
+        @Body request: BorrowRequest
+    ): Borrowing
+
+    @GET("borrowings")
+    suspend fun getBorrowings(
+        @Header("Authorization") token: String
+    ): List<Borrowing>
 }

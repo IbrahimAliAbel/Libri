@@ -11,10 +11,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.libri.viewmodel.BookViewModel
 import kotlinx.coroutines.launch
+import android.widget.Toast
+import com.example.libri.TokenManager
 
 class BookDetailActivity : AppCompatActivity() {
 
     private val viewModel: BookViewModel by viewModels()
+    private lateinit var tokenManager: TokenManager
 
     private lateinit var tvBack: TextView
     private lateinit var tvBookTitle: TextView
@@ -30,6 +33,7 @@ class BookDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_book_detail)
+        tokenManager = TokenManager(this)
 
         tvBack = findViewById(R.id.tvBack)
         tvBookTitle = findViewById(R.id.tvBookTitle)
@@ -56,6 +60,8 @@ class BookDetailActivity : AppCompatActivity() {
         observeBookCopies()
         viewModel.loadBookDetail(bookId)
         viewModel.loadBookCopiesByBookId(bookId)
+        observeBorrowing()
+        observeError()
     }
 
     private fun observeBookDetail() {
@@ -90,16 +96,65 @@ class BookDetailActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.bookCopiesByBook.collect { bookCopies ->
-                    val availableCount = bookCopies.count {
+                    val availableCopies = bookCopies.filter {
                         it.status == "AVAILABLE"
                     }
 
+                    val availableCount = availableCopies.size
                     val totalCount = bookCopies.size
 
                     tvBookAvailability.text =
                         "Availability: $availableCount of $totalCount copies available"
 
                     buttonBorrow.isEnabled = availableCount > 0
+
+                    buttonBorrow.setOnClickListener {
+                        if (availableCopies.isNotEmpty()) {
+                            val bookCopyId = availableCopies.first().id
+                            val token = tokenManager.getToken()
+
+                            if (token != null) {
+                                viewModel.createBorrowing(
+                                    "Bearer $token",
+                                    bookCopyId
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeBorrowing() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.borrowing.collect { borrowing ->
+                    if (borrowing != null) {
+                        Toast.makeText(
+                            this@BookDetailActivity,
+                            "Borrow request submitted",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        buttonBorrow.isEnabled = false
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeError() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.error.collect { error ->
+                    if (!error.isNullOrBlank()) {
+                        Toast.makeText(
+                            this@BookDetailActivity,
+                            error,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
         }

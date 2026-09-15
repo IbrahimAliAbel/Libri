@@ -8,6 +8,10 @@ import com.example.libri.repository.BookRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import com.example.libri.BorrowRequest
+import com.example.libri.Borrowing
+import retrofit2.HttpException
+import org.json.JSONObject
 
 class BookViewModel : ViewModel() {
 
@@ -15,6 +19,12 @@ class BookViewModel : ViewModel() {
 
     private val _bookCopies = MutableStateFlow<List<BookCopy>>(emptyList())
     val bookCopies: StateFlow<List<BookCopy>> = _bookCopies
+
+    private val _borrowing = MutableStateFlow<Borrowing?>(null)
+    val borrowing: StateFlow<Borrowing?> = _borrowing
+
+    private val _borrowings = MutableStateFlow<List<Borrowing>>(emptyList())
+    val borrowings: StateFlow<List<Borrowing>> = _borrowings
 
     private val _bookDetail = MutableStateFlow<Book?>(null)
     val bookDetail: StateFlow<Book?> = _bookDetail
@@ -53,6 +63,51 @@ class BookViewModel : ViewModel() {
                 _error.value = null
                 _bookCopiesByBook.value =
                     repository.getBookCopiesByBookId(bookId)
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
+    }
+
+    fun createBorrowing(
+        token: String,
+        bookCopyId: String
+    ) {
+        viewModelScope.launch {
+            try {
+                _error.value = null
+
+                _borrowing.value = repository.createBorrowing(
+                    token,
+                    BorrowRequest(bookCopyId)
+                )
+            } catch (e: Exception) {
+                if (e is HttpException) {
+                    val errorBody = e.response()?.errorBody()?.string()
+
+                    _error.value = try {
+                        JSONObject(errorBody ?: "").getString("message")
+                    } catch (jsonException: Exception) {
+                        e.message
+                    }
+                } else {
+                    _error.value = e.message
+                }
+
+                android.util.Log.e(
+                    "LIBRI_BORROW",
+                    "Borrow failed: ${_error.value}",
+                    e
+                )
+            }
+        }
+    }
+
+    fun loadBorrowings(token: String) {
+        viewModelScope.launch {
+            try {
+                _error.value = null
+                _borrowings.value = repository.getBorrowings(token)
             } catch (e: Exception) {
                 _error.value = e.message
             }
