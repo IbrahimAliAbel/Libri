@@ -74,4 +74,10 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id") id: String
     ): Borrowing
+
+    @PUT("borrowings/{id}/complete-return")
+    suspend fun completeReturn(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): Borrowing
 }

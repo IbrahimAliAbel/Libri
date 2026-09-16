@@ -64,6 +64,10 @@
             android:name=".AdminBorrowingActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".AdminReturnActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

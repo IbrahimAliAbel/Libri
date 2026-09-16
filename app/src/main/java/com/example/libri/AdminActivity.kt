@@ -22,5 +22,17 @@ class AdminActivity : AppCompatActivity() {
                 )
             )
         }
+
+        val buttonReturnRequests =
+            findViewById<Button>(R.id.buttonReturnRequests)
+
+        buttonReturnRequests.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@AdminActivity,
+                    AdminReturnActivity::class.java
+                )
+            )
+        }
     }
 }

@@ -48,4 +48,10 @@ class BookRepository {
         id: String
     ): Borrowing =
         RetrofitClient.api.requestReturn(token, id)
+
+    suspend fun completeReturn(
+        token: String,
+        id: String
+    ): Borrowing =
+        RetrofitClient.api.completeReturn(token, id)
 }

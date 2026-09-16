@@ -161,4 +161,20 @@ class BookViewModel : ViewModel() {
             }
         }
     }
+
+    fun completeReturn(token: String, id: String) {
+        viewModelScope.launch {
+            try {
+                _error.value = null
+
+                repository.completeReturn(token, id)
+
+                // Refresh daftar borrowing setelah return selesai
+                _borrowings.value = repository.getBorrowings(token)
+
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
+    }
 }
