@@ -8,23 +8,10 @@
     android:gravity="center_vertical"
     android:background="#FFFFFF">
 
-    <!-- Menu -->
-    <TextView
-        android:id="@+id/buttonLoginMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="⋮"
-        android:textSize="28sp"
-        android:textColor="#555555"
-        android:padding="8dp"
-        android:clickable="true"
-        android:focusable="true" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to Libri"
+        android:text="Libri Admin"
         android:textSize="28sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
@@ -33,22 +20,22 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login to continue"
+        android:text="Admin Login"
         android:textSize="16sp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="32dp" />
 
     <EditText
-        android:id="@+id/editTextEmail"
+        android:id="@+id/editTextAdminEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="Admin Email"
         android:inputType="textEmailAddress"
         android:padding="12dp"
         android:layout_marginBottom="16dp" />
 
     <EditText
-        android:id="@+id/editTextPassword"
+        android:id="@+id/editTextAdminPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
@@ -57,16 +44,16 @@
         android:layout_marginBottom="24dp" />
 
     <Button
-        android:id="@+id/buttonLogin"
+        android:id="@+id/buttonAdminLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="LOGIN" />
+        android:text="LOGIN AS ADMIN" />
 
     <TextView
-        android:id="@+id/textViewRegister"
+        android:id="@+id/textViewBackToLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't have an account? Register"
+        android:text="← Back to Member Login"
         android:textSize="14sp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"

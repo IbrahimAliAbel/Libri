@@ -14,6 +14,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.PUT
 
 interface ApiService {
 
@@ -55,4 +56,16 @@ interface ApiService {
     suspend fun getBorrowings(
         @Header("Authorization") token: String
     ): List<Borrowing>
+
+    @PUT("borrowings/{id}/approve")
+    suspend fun approveBorrowing(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): Borrowing
+
+    @PUT("borrowings/{id}/reject")
+    suspend fun rejectBorrowing(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): Borrowing
 }

@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.libri.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
+import android.widget.PopupMenu
 
 class LoginActivity : AppCompatActivity() {
 
@@ -23,9 +24,35 @@ class LoginActivity : AppCompatActivity() {
 
     private val viewModel: AuthViewModel by viewModels()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val buttonLoginMenu = findViewById<TextView>(R.id.buttonLoginMenu)
+
+        buttonLoginMenu.setOnClickListener {
+            val popupMenu = PopupMenu(this, buttonLoginMenu)
+
+            popupMenu.menu.add("Login sebagai Admin")
+
+            popupMenu.setOnMenuItemClickListener { item ->
+                if (item.title == "Login sebagai Admin") {
+                    startActivity(
+                        Intent(
+                            this@LoginActivity,
+                            AdminLoginActivity::class.java
+                        )
+                    )
+
+                    true
+                } else {
+                    false
+                }
+            }
+
+            popupMenu.show()
+        }
 
         editTextEmail = findViewById(R.id.editTextEmail)
         editTextPassword = findViewById(R.id.editTextPassword)

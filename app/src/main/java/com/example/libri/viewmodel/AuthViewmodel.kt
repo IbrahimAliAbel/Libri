@@ -43,11 +43,19 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                 // Simpan JWT
                 tokenManager.saveToken(response.token)
 
+                // Simpan role user
+                tokenManager.saveRole(response.user.role)
+
                 // Simpan user hasil login
                 _loginResult.value = response.user
 
             } catch (e: Exception) {
                 _error.value = e.message ?: "Login failed"
+                android.util.Log.e(
+                    "LIBRI_LOGIN",
+                    "Login error",
+                    e
+                )
             } finally {
                 _loading.value = false
             }

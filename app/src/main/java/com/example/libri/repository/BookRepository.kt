@@ -30,4 +30,16 @@ class BookRepository {
     suspend fun getBorrowings(token: String): List<Borrowing> {
         return RetrofitClient.api.getBorrowings(token)
     }
+
+    suspend fun approveBorrowing(
+        token: String,
+        id: String
+    ): Borrowing =
+        RetrofitClient.api.approveBorrowing(token, id)
+
+    suspend fun rejectBorrowing(
+        token: String,
+        id: String
+    ): Borrowing =
+        RetrofitClient.api.rejectBorrowing(token, id)
 }

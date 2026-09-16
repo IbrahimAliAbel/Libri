@@ -23,5 +23,23 @@ class TokenManager(context: Context) {
         preferences.edit()
             .remove("jwt_token")
             .apply()
+
+        clearRole()
+    }
+
+    fun saveRole(role: String) {
+        preferences.edit()
+            .putString("user_role", role)
+            .apply()
+    }
+
+    fun getRole(): String? {
+        return preferences.getString("user_role", null)
+    }
+
+    fun clearRole() {
+        preferences.edit()
+            .remove("user_role")
+            .apply()
     }
 }

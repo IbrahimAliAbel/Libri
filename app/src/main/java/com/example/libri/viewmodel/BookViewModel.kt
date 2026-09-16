@@ -113,4 +113,36 @@ class BookViewModel : ViewModel() {
             }
         }
     }
+
+    fun approveBorrowing(token: String, id: String) {
+        viewModelScope.launch {
+            try {
+                _error.value = null
+
+                repository.approveBorrowing(token, id)
+
+                // Refresh daftar borrowing setelah approve
+                _borrowings.value = repository.getBorrowings(token)
+
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
+    }
+
+    fun rejectBorrowing(token: String, id: String) {
+        viewModelScope.launch {
+            try {
+                _error.value = null
+
+                repository.rejectBorrowing(token, id)
+
+                // Refresh daftar borrowing setelah reject
+                _borrowings.value = repository.getBorrowings(token)
+
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
+    }
 }
