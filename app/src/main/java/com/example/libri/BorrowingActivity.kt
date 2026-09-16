@@ -35,7 +35,20 @@ class BorrowingActivity : AppCompatActivity() {
             finish()
         }
 
-        adapter = BorrowingAdapter(emptyList())
+        adapter = BorrowingAdapter(
+            emptyList(),
+            onRequestReturn = { borrowingId ->
+
+                val token = tokenManager.getToken()
+
+                if (token != null) {
+                    viewModel.requestReturn(
+                        "Bearer $token",
+                        borrowingId
+                    )
+                }
+            }
+        )
 
         rvBorrowings.layoutManager = LinearLayoutManager(this)
         rvBorrowings.adapter = adapter

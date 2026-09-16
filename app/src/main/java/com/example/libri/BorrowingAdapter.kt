@@ -5,9 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import android.widget.Button
 
 class BorrowingAdapter(
-    private var borrowings: List<Borrowing>
+    private var borrowings: List<Borrowing>,
+    private val onRequestReturn: (String) -> Unit
 ) : RecyclerView.Adapter<BorrowingAdapter.BorrowingViewHolder>() {
 
     class BorrowingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -23,6 +25,9 @@ class BorrowingAdapter(
 
         val tvBorrowingDueDate: TextView =
             itemView.findViewById(R.id.tvBorrowingDueDate)
+
+        val buttonRequestReturn: Button =
+            itemView.findViewById(R.id.buttonRequestReturn)
     }
 
     override fun onCreateViewHolder(
@@ -53,6 +58,20 @@ class BorrowingAdapter(
 
         holder.tvBorrowingDueDate.text =
             "Due date: ${borrowing.due_date ?: "-"}"
+
+        if (borrowing.status == "BORROWED") {
+
+            holder.buttonRequestReturn.visibility = View.VISIBLE
+
+            holder.buttonRequestReturn.setOnClickListener {
+                onRequestReturn(borrowing.id)
+            }
+
+        } else {
+
+            holder.buttonRequestReturn.visibility = View.GONE
+            holder.buttonRequestReturn.setOnClickListener(null)
+        }
     }
 
     override fun getItemCount(): Int = borrowings.size

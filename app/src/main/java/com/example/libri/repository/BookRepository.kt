@@ -42,4 +42,10 @@ class BookRepository {
         id: String
     ): Borrowing =
         RetrofitClient.api.rejectBorrowing(token, id)
+
+    suspend fun requestReturn(
+        token: String,
+        id: String
+    ): Borrowing =
+        RetrofitClient.api.requestReturn(token, id)
 }
