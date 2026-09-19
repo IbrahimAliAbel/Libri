@@ -5,6 +5,8 @@ import com.example.libri.data.api.RetrofitClient
 import com.example.libri.Book
 import com.example.libri.BorrowRequest
 import com.example.libri.Borrowing
+import com.example.libri.data.model.CreateBookRequest
+import com.example.libri.data.model.Category
 
 class BookRepository {
 
@@ -54,4 +56,16 @@ class BookRepository {
         id: String
     ): Borrowing =
         RetrofitClient.api.completeReturn(token, id)
+
+    suspend fun getBooks(): List<Book> =
+        RetrofitClient.api.getBooks()
+
+    suspend fun createBook(
+        token: String,
+        request: CreateBookRequest
+    ): Book =
+        RetrofitClient.api.createBook(token, request)
+
+    suspend fun getCategories(): List<Category> =
+        RetrofitClient.api.getCategories()
 }

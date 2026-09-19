@@ -36,38 +36,27 @@
             android:exported="false" />
         <activity
             android:name=".BorrowingActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".AdminActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".AdminLoginActivity"
             android:exported="false" />
-
         <activity
             android:name=".AdminBorrowingActivity"
             android:exported="false" />
-
         <activity
             android:name=".AdminReturnActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".AdminBookActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminAddBookActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

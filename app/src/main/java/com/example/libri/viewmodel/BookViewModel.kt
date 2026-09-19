@@ -12,10 +12,18 @@ import com.example.libri.BorrowRequest
 import com.example.libri.Borrowing
 import retrofit2.HttpException
 import org.json.JSONObject
+import com.example.libri.data.model.CreateBookRequest
+import com.example.libri.data.model.Category
 
 class BookViewModel : ViewModel() {
 
     private val repository = BookRepository()
+
+    private val _bookCreated = MutableStateFlow<Book?>(null)
+    val bookCreated: StateFlow<Book?> = _bookCreated
+
+    private val _books = MutableStateFlow<List<Book>>(emptyList())
+    val books: StateFlow<List<Book>> = _books
 
     private val _bookCopies = MutableStateFlow<List<BookCopy>>(emptyList())
     val bookCopies: StateFlow<List<BookCopy>> = _bookCopies
@@ -34,6 +42,9 @@ class BookViewModel : ViewModel() {
 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
+
+    private val _categories = MutableStateFlow<List<Category>>(emptyList())
+    val categories: StateFlow<List<Category>> = _categories
 
     fun loadBookCopies() {
         viewModelScope.launch {
@@ -176,5 +187,50 @@ class BookViewModel : ViewModel() {
                 _error.value = e.message
             }
         }
+    }
+
+    fun loadBooks() {
+        viewModelScope.launch {
+            try {
+                _error.value = null
+                _books.value = repository.getBooks()
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
+    }
+
+    fun createBook(
+        token: String,
+        request: CreateBookRequest
+    ) {
+        viewModelScope.launch {
+            try {
+                _error.value = null
+
+                _bookCreated.value = repository.createBook(
+                    token,
+                    request
+                )
+
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
+    }
+
+    fun loadCategories() {
+        viewModelScope.launch {
+            try {
+                _error.value = null
+                _categories.value = repository.getCategories()
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
+    }
+
+    fun clearError() {
+        _error.value = null
     }
 }

@@ -34,5 +34,17 @@ class AdminActivity : AppCompatActivity() {
                 )
             )
         }
+
+        val buttonManageBooks =
+            findViewById<Button>(R.id.buttonManageBooks)
+
+        buttonManageBooks.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@AdminActivity,
+                    AdminBookActivity::class.java
+                )
+            )
+        }
     }
 }

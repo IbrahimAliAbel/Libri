@@ -15,6 +15,8 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.PUT
+import com.example.libri.data.model.CreateBookRequest
+import com.example.libri.data.model.Category
 
 interface ApiService {
 
@@ -80,4 +82,16 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("id") id: String
     ): Borrowing
+
+    @GET("books")
+    suspend fun getBooks(): List<Book>
+
+    @POST("books")
+    suspend fun createBook(
+        @Header("Authorization") token: String,
+        @Body request: CreateBookRequest
+    ): Book
+
+    @GET("categories")
+    suspend fun getCategories(): List<Category>
 }
