@@ -75,4 +75,11 @@ class BookRepository {
         request: CreateBookRequest
     ): Book =
         RetrofitClient.api.updateBook(token, id, request)
+
+    suspend fun deleteBook(
+        token: String,
+        id: String
+    ) {
+        RetrofitClient.api.deleteBook(token, id)
+    }
 }

@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class AdminBookAdapter(
     private var books: List<Book>,
-    private val onEditClick: (Book) -> Unit
+    private val onEditClick: (Book) -> Unit,
+    private val onDeleteClick: (Book) -> Unit
 ) : RecyclerView.Adapter<AdminBookAdapter.BookViewHolder>() {
 
     class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -27,6 +28,9 @@ class AdminBookAdapter(
 
         val buttonEdit: TextView =
             itemView.findViewById(R.id.buttonEditBook)
+
+        val buttonDelete: TextView =
+            itemView.findViewById(R.id.buttonDeleteBook)
     }
 
     override fun onCreateViewHolder(
@@ -57,6 +61,10 @@ class AdminBookAdapter(
 
         holder.buttonEdit.setOnClickListener {
             onEditClick(book)
+        }
+
+        holder.buttonDelete.setOnClickListener {
+            onDeleteClick(book)
         }
     }
 

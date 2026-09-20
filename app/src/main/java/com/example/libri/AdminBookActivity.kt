@@ -13,6 +13,8 @@ import com.example.libri.viewmodel.BookViewModel
 import kotlinx.coroutines.launch
 import android.content.Intent
 import android.widget.Button
+import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
 
 class AdminBookActivity : AppCompatActivity() {
 
@@ -45,16 +47,44 @@ class AdminBookActivity : AppCompatActivity() {
             finish()
         }
 
-        adapter = AdminBookAdapter(emptyList()) { book ->
-            startActivity(
-                Intent(
-                    this@AdminBookActivity,
-                    AdminEditBookActivity::class.java
-                ).apply {
-                    putExtra("book_id", book.id)
-                }
-            )
-        }
+        adapter = AdminBookAdapter(
+            emptyList(),
+            onEditClick = { book ->
+                startActivity(
+                    Intent(
+                        this@AdminBookActivity,
+                        AdminEditBookActivity::class.java
+                    ).apply {
+                        putExtra("book_id", book.id)
+                    }
+                )
+            },
+            onDeleteClick = { book ->
+                AlertDialog.Builder(this@AdminBookActivity)
+                    .setTitle("Delete Book")
+                    .setMessage("Are you sure you want to delete \"${book.title}\"?")
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("Delete") { _, _ ->
+
+                        val token = TokenManager(this@AdminBookActivity).getToken()
+
+                        if (token == null) {
+                            Toast.makeText(
+                                this@AdminBookActivity,
+                                "Admin session expired",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            return@setPositiveButton
+                        }
+
+                        viewModel.deleteBook(
+                            token = "Bearer $token",
+                            id = book.id
+                        )
+                    }
+                    .show()
+            }
+        )
 
         rvAdminBooks.layoutManager = LinearLayoutManager(this)
         rvAdminBooks.adapter = adapter

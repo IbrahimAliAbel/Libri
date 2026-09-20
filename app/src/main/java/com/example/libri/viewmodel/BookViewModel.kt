@@ -264,6 +264,27 @@ class BookViewModel : ViewModel() {
         }
     }
 
+    fun deleteBook(
+        token: String,
+        id: String
+    ) {
+        viewModelScope.launch {
+            try {
+                _error.value = null
+
+                repository.deleteBook(
+                    token = token,
+                    id = id
+                )
+
+                _books.value = repository.getBooks()
+
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
+    }
+
     fun clearError() {
         _error.value = null
     }

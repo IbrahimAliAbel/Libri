@@ -17,6 +17,8 @@ import retrofit2.http.Path
 import retrofit2.http.PUT
 import com.example.libri.data.model.CreateBookRequest
 import com.example.libri.data.model.Category
+import retrofit2.http.DELETE
+
 
 interface ApiService {
 
@@ -101,4 +103,10 @@ interface ApiService {
         @Path("id") id: String,
         @Body request: CreateBookRequest
     ): Book
+
+    @DELETE("books/{id}")
+    suspend fun deleteBook(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    )
 }
