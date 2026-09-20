@@ -7,7 +7,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class AdminBookAdapter(
-    private var books: List<Book>
+    private var books: List<Book>,
+    private val onEditClick: (Book) -> Unit
 ) : RecyclerView.Adapter<AdminBookAdapter.BookViewHolder>() {
 
     class BookViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -23,6 +24,9 @@ class AdminBookAdapter(
 
         val tvYear: TextView =
             itemView.findViewById(R.id.tvAdminBookYear)
+
+        val buttonEdit: TextView =
+            itemView.findViewById(R.id.buttonEditBook)
     }
 
     override fun onCreateViewHolder(
@@ -50,6 +54,10 @@ class AdminBookAdapter(
         holder.tvIsbn.text = "ISBN: ${book.isbn ?: "-"}"
         holder.tvPublisher.text = "Publisher: ${book.publisher ?: "-"}"
         holder.tvYear.text = "Year: ${book.published_year ?: "-"}"
+
+        holder.buttonEdit.setOnClickListener {
+            onEditClick(book)
+        }
     }
 
     override fun getItemCount(): Int {

@@ -94,4 +94,11 @@ interface ApiService {
 
     @GET("categories")
     suspend fun getCategories(): List<Category>
+
+    @PUT("books/{id}")
+    suspend fun updateBook(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+        @Body request: CreateBookRequest
+    ): Book
 }

@@ -57,6 +57,9 @@
         <activity
             android:name=".AdminAddBookActivity"
             android:exported="false" />
+        <activity
+            android:name=".AdminEditBookActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

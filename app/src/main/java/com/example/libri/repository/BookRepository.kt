@@ -68,4 +68,11 @@ class BookRepository {
 
     suspend fun getCategories(): List<Category> =
         RetrofitClient.api.getCategories()
+
+    suspend fun updateBook(
+        token: String,
+        id: String,
+        request: CreateBookRequest
+    ): Book =
+        RetrofitClient.api.updateBook(token, id, request)
 }

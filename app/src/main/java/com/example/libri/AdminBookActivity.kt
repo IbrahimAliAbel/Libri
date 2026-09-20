@@ -45,7 +45,16 @@ class AdminBookActivity : AppCompatActivity() {
             finish()
         }
 
-        adapter = AdminBookAdapter(emptyList())
+        adapter = AdminBookAdapter(emptyList()) { book ->
+            startActivity(
+                Intent(
+                    this@AdminBookActivity,
+                    AdminEditBookActivity::class.java
+                ).apply {
+                    putExtra("book_id", book.id)
+                }
+            )
+        }
 
         rvAdminBooks.layoutManager = LinearLayoutManager(this)
         rvAdminBooks.adapter = adapter

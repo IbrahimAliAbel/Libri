@@ -25,6 +25,9 @@ class BookViewModel : ViewModel() {
     private val _books = MutableStateFlow<List<Book>>(emptyList())
     val books: StateFlow<List<Book>> = _books
 
+    private val _selectedBook = MutableStateFlow<Book?>(null)
+    val selectedBook: StateFlow<Book?> = _selectedBook
+
     private val _bookCopies = MutableStateFlow<List<BookCopy>>(emptyList())
     val bookCopies: StateFlow<List<BookCopy>> = _bookCopies
 
@@ -224,6 +227,37 @@ class BookViewModel : ViewModel() {
             try {
                 _error.value = null
                 _categories.value = repository.getCategories()
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
+    }
+
+    fun updateBook(
+        token: String,
+        id: String,
+        request: CreateBookRequest
+    ) {
+        viewModelScope.launch {
+            try {
+                _error.value = null
+
+                _bookCreated.value = repository.updateBook(
+                    token = token,
+                    id = id,
+                    request = request
+                )
+            } catch (e: Exception) {
+                _error.value = e.message
+            }
+        }
+    }
+
+    fun loadBookById(id: String) {
+        viewModelScope.launch {
+            try {
+                _error.value = null
+                _selectedBook.value = repository.getBookById(id)
             } catch (e: Exception) {
                 _error.value = e.message
             }
